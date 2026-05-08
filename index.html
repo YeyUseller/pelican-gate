@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pelicans Gate — Personalized Ticket Sourcing for Live Events</title>
+  <meta name="description" content="Pelicans Gate helps clients find tickets for concerts, sports events, festivals and exclusive live experiences through a personalized ticket sourcing service." />
+  <meta name="keywords" content="ticket sourcing, concert tickets, sports tickets, live events, premium tickets, VIP tickets, event access, personalized ticket service" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a0f1e;
+      --navy-mid: #111827;
+      --navy-light: #1a2540;
+      --gold: #c9a84c;
+      --gold-light: #e2c06e;
+      --gold-pale: #f0d898;
+      --white: #f8f4ec;
+      --white-dim: rgba(248,244,236,0.7);
+      --white-faint: rgba(248,244,236,0.12);
+      --border: rgba(201,168,76,0.2);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2.5rem;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-pale));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      color: var(--white);
+    }
+
+    nav { display: flex; align-items: center; gap: 2.5rem; }
+
+    nav a {
+      color: var(--white-dim);
+      text-decoration: none;
+      font-size: .82rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: color .25s;
+    }
+    nav a:hover { color: var(--gold-light); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy);
+      padding: .55rem 1.6rem;
+      border: none;
+      border-radius: 2px;
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--gold-light);
+      padding: .55rem 1.6rem;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .2s, color .2s, transform .2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { background: var(--white-faint); transform: translateY(-1px); }
+
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(10,15,30,0.97);
+      backdrop-filter: blur(24px);
+      padding: 2rem;
+      flex-direction: column;
+      gap: 1.5rem;
+      z-index: 99;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      color: var(--white-dim);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 8rem 2.5rem 5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,168,76,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 90% 10%, rgba(201,168,76,.05) 0%, transparent 60%),
+        linear-gradient(160deg, #0a0f1e 0%, #0d1528 50%, #0a1020 100%);
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,.07) 0%, transparent 70%);
+      top: 10%; right: -10%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 780px;
+      animation: fadeUp .9s ease both;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      padding: .35rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+    }
+    .hero-label span { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; display: inline-block; }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-h1 em { font-style: italic; color: var(--gold-light); }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--white-dim);
+      max-width: 560px;
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+
+    .hero-desc {
+      font-size: .88rem;
+      color: rgba(248,244,236,0.45);
+      max-width: 520px;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 4rem;
+      right: 2.5rem;
+      display: flex;
+      gap: 3rem;
+      animation: fadeUp 1s .3s ease both;
+    }
+    .stat-item { text-align: right; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .stat-lbl { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--white-dim); margin-top: .3rem; }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 2.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .section-tag {
+      display: inline-block;
+      font-size: .65rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    .section-sub {
+      font-size: .95rem;
+      color: var(--white-dim);
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    .divider {
+      width: 48px; height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 2rem 0;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--navy-mid); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+      height: 420px;
+    }
+
+    .about-box {
+      position: absolute;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--white-faint);
+      backdrop-filter: blur(8px);
+    }
+    .about-box-main {
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,.06), rgba(201,168,76,.02));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .about-icon-large {
+      font-size: 8rem;
+      opacity: .07;
+      user-select: none;
+    }
+    .about-box-badge {
+      bottom: 2rem; right: -1.5rem;
+      padding: 1.2rem 1.8rem;
+      width: 180px;
+      background: var(--navy);
+      border-color: var(--border);
+    }
+    .badge-num {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .badge-txt { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--white-dim); margin-top: .3rem; }
+
+    .about-box-tag {
+      top: 2rem; right: -1.5rem;
+      padding: .8rem 1.2rem;
+      background: var(--navy);
+    }
+    .tag-inner { display: flex; align-items: center; gap: .5rem; font-size: .75rem; color: var(--gold-light); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--navy); }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      border: 1.5px solid var(--border);
+    }
+
+    .service-card {
+      padding: 2.5rem;
+      background: var(--navy-mid);
+      border: 1.5px solid transparent;
+      transition: background .3s, border-color .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s;
+    }
+    .service-card:hover { background: rgba(201,168,76,.04); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: rgba(201,168,76,.15);
+      line-height: 1;
+      margin-bottom: 1.2rem;
+    }
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin-bottom: .75rem;
+      color: var(--white);
+    }
+    .service-card p { font-size: .85rem; color: var(--white-dim); line-height: 1.8; }
+
+    /* ── HOW IT WORKS ── */
+    #how-it-works { background: var(--navy-mid); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 4rem;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      left: calc(16.66% + 1.5rem);
+      right: calc(16.66% + 1.5rem);
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold) 0%, rgba(201,168,76,.3) 50%, var(--gold) 100%);
+    }
+
+    .step {
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .step-circle {
+      width: 5rem; height: 5rem;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      background: var(--navy);
+      position: relative;
+      z-index: 1;
+    }
+    .step-circle-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--gold);
+    }
+    .step h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: .75rem;
+    }
+    .step p { font-size: .85rem; color: var(--white-dim); line-height: 1.8; }
+
+    /* ── WHY CHOOSE US ── */
+    #why-us { background: var(--navy); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      margin-top: 4rem;
+      border: 1px solid var(--border);
+      background: var(--border);
+    }
+
+    .why-card {
+      background: var(--navy);
+      padding: 2.5rem 1.8rem;
+      transition: background .3s;
+    }
+    .why-card:hover { background: rgba(201,168,76,.04); }
+
+    .why-icon {
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .why-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: .6rem;
+      color: var(--gold-light);
+    }
+    .why-card p { font-size: .82rem; color: var(--white-dim); line-height: 1.8; }
+
+    /* ── FORM ── */
+    #request-tickets {
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,.05) 0%, transparent 70%),
+        var(--navy-mid);
+    }
+
+    .form-header { text-align: center; margin-bottom: 4rem; }
+    .form-header .section-title { font-size: clamp(2.2rem, 5vw, 3.8rem); }
+    .form-header .divider { margin: 1.5rem auto; }
+
+    .form-container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3rem 3.5rem;
+    }
+
+    .form-section-title {
+      font-size: .65rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+    }
+    .form-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .form-full { grid-column: 1 / -1; }
+
+    .field { display: flex; flex-direction: column; gap: .45rem; }
+
+    label {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(248,244,236,0.5);
+    }
+
+    input, select, textarea {
+      background: var(--navy-light);
+      border: 1px solid rgba(201,168,76,.18);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .88rem;
+      font-weight: 300;
+      padding: .8rem 1rem;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+    input::placeholder, textarea::placeholder { color: rgba(248,244,236,0.25); }
+    select option { background: var(--navy); }
+    textarea { resize: vertical; min-height: 100px; }
+
+    .form-sep { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      margin-bottom: .9rem;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      min-width: 16px;
+      height: 16px;
+      accent-color: var(--gold);
+      margin-top: 3px;
+    }
+    .checkbox-row label {
+      font-size: .82rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--white-dim);
+      cursor: pointer;
+    }
+    .checkbox-row label a { color: var(--gold-light); }
+
+    .form-submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy);
+      padding: .9rem 3rem;
+      border: none;
+      border-radius: 2px;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-submit:hover { opacity: .87; transform: translateY(-1px); }
+
+    .form-note { font-size: .75rem; color: rgba(248,244,236,0.35); max-width: 300px; line-height: 1.6; }
+
+    .form-message {
+      display: none;
+      padding: 1.2rem 1.5rem;
+      border-radius: 3px;
+      margin-top: 1.5rem;
+      font-size: .87rem;
+    }
+    .form-message.success {
+      display: block;
+      background: rgba(201,168,76,.1);
+      border: 1px solid var(--gold);
+      color: var(--gold-pale);
+    }
+    .form-message.error {
+      display: block;
+      background: rgba(220,60,60,.1);
+      border: 1px solid rgba(220,60,60,.4);
+      color: #f8a0a0;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--navy); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-items { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.8rem; }
+
+    .contact-item {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .contact-item-icon {
+      width: 44px; height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: var(--white-faint);
+    }
+    .contact-item-text label { font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .3rem; }
+    .contact-item-text a, .contact-item-text p { font-size: .9rem; color: var(--white-dim); text-decoration: none; transition: color .2s; }
+    .contact-item-text a:hover { color: var(--gold-light); }
+
+    .contact-cta-box {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .contact-cta-box h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .contact-cta-box p { font-size: .88rem; color: var(--white-dim); margin-bottom: 2rem; line-height: 1.8; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070c18;
+      border-top: 1px solid var(--border);
+      padding: 3rem 2.5rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-tagline { font-size: .8rem; color: rgba(248,244,236,0.35); margin-top: .4rem; letter-spacing: .05em; }
+
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-links a { font-size: .78rem; color: rgba(248,244,236,0.4); text-decoration: none; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy { font-size: .75rem; color: rgba(248,244,236,0.25); }
+
+    /* ── LEGAL PAGES ── */
+    .legal-page {
+      display: none;
+      min-height: 100vh;
+      padding: 8rem 2.5rem 5rem;
+      background: var(--navy);
+    }
+    .legal-page.active { display: block; }
+    .legal-content { max-width: 800px; margin: 0 auto; }
+    .legal-content h1 { font-family: var(--font-display); font-size: 2.8rem; font-weight: 400; margin-bottom: 2rem; color: var(--gold-light); }
+    .legal-content h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; margin: 2rem 0 .8rem; }
+    .legal-content p { font-size: .9rem; color: var(--white-dim); line-height: 1.9; margin-bottom: 1rem; }
+    .legal-content ul { padding-left: 1.5rem; color: var(--white-dim); font-size: .9rem; line-height: 2; margin-bottom: 1rem; }
+    .back-link { display: inline-flex; align-items: center; gap: .5rem; color: var(--gold-light); font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; margin-bottom: 3rem; transition: gap .2s; }
+    .back-link:hover { gap: .8rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 0 1.5rem; }
+      nav, header .btn-primary { display: none; }
+      .hamburger { display: flex; }
+
+      section { padding: 5rem 1.5rem; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-visual { height: 280px; }
+      .about-box-badge, .about-box-tag { right: 0; }
+
+      .services-grid { grid-template-columns: 1fr; }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .steps::before { display: none; }
+      .step { text-align: left; display: flex; gap: 1.5rem; align-items: flex-start; }
+      .step-circle { margin: 0; flex-shrink: 0; }
+
+      .why-grid { grid-template-columns: 1fr 1fr; }
+
+      .form-container { padding: 2rem 1.5rem; }
+      .form-grid { grid-template-columns: 1fr; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+      .footer-top { flex-direction: column; }
+      .hero-stats { position: static; margin-top: 3rem; justify-content: flex-start; }
+
+      .services-header { flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      .why-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Gold dot accent */
+    .gold-dot { color: var(--gold); }
+
+    .main-content { }
+    .main-content.hidden, .legal-page { }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header id="site-header">
+  <a href="#home" class="logo" onclick="showMain()">
+    <div class="logo-icon">🦤</div>
+    <span class="logo-text">Pelicans Gate</span>
+  </a>
+  <nav>
+    <a href="#home" onclick="showMain()">Home</a>
+    <a href="#services" onclick="showMain()">Services</a>
+    <a href="#how-it-works" onclick="showMain()">How It Works</a>
+    <a href="#request-tickets" onclick="showMain()">Request Tickets</a>
+    <a href="#contact" onclick="showMain()">Contact</a>
+  </nav>
+  <a href="#request-tickets" class="btn-primary" onclick="showMain()">Request Tickets</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#home" onclick="closeMobile();showMain()">Home</a>
+  <a href="#services" onclick="closeMobile();showMain()">Services</a>
+  <a href="#how-it-works" onclick="closeMobile();showMain()">How It Works</a>
+  <a href="#request-tickets" onclick="closeMobile();showMain()">Request Tickets</a>
+  <a href="#contact" onclick="closeMobile();showMain()">Contact</a>
+  <a href="#request-tickets" class="btn-primary" style="text-align:center;margin-top:.5rem" onclick="closeMobile();showMain()">Request Tickets</a>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<div id="main-content">
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-label"><span></span> Personalized Ticket Sourcing</div>
+      <h1 class="hero-h1">Your Gateway to<br><em>Live Events</em></h1>
+      <p class="hero-sub">Personalized ticket sourcing for concerts, sports, festivals and exclusive live experiences worldwide.</p>
+      <p class="hero-desc">At Pelicans Gate, we help clients find and secure access to high-demand events through a personalized, reliable and efficient ticket sourcing service.</p>
+      <div class="hero-cta">
+        <a href="#request-tickets" class="btn-primary">Request Tickets</a>
+        <a href="#contact" class="btn-ghost">Contact Us</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">100+</div>
+        <div class="stat-lbl">Event Types</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">50+</div>
+        <div class="stat-lbl">Countries</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">24h</div>
+        <div class="stat-lbl">Response Time</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="reveal">
+          <span class="section-tag">About Us</span>
+          <h2 class="section-title">A premium service built around <em>your event</em></h2>
+          <div class="divider"></div>
+          <p style="color:var(--white-dim);font-size:.92rem;line-height:1.9;margin-bottom:1.5rem;">
+            Pelicans Gate is a personalized ticket sourcing company focused on helping clients access the events they do not want to miss.
+          </p>
+          <p style="color:var(--white-dim);font-size:.92rem;line-height:1.9;">
+            From international concerts to major sports events and exclusive live experiences, we provide a direct, efficient and client-focused service designed to make ticket access easier, faster and more reliable.
+          </p>
+          <div style="margin-top:2.5rem;">
+            <a href="#request-tickets" class="btn-primary">Start a Request</a>
+          </div>
+        </div>
+        <div class="about-visual reveal reveal-delay-2">
+          <div class="about-box about-box-main">
+            <span class="about-icon-large">🎟</span>
+          </div>
+          <div class="about-box about-box-badge">
+            <div class="badge-num">VIP</div>
+            <div class="badge-txt">Premium Access</div>
+          </div>
+          <div class="about-box about-box-tag">
+            <div class="tag-inner">🌍 Global Coverage</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="services-header">
+        <div class="reveal">
+          <span class="section-tag">Our Services</span>
+          <h2 class="section-title">Tailored ticket access for<br><em>high-demand events</em></h2>
+        </div>
+        <p class="section-sub reveal reveal-delay-2" style="max-width:320px;text-align:right;">Tell us what you need and we'll handle the rest — from sourcing to delivery.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-num">01</div>
+          <h3>Concert Tickets</h3>
+          <p>Access to high-demand concerts, tours and music festivals worldwide.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">02</div>
+          <h3>Sports Events</h3>
+          <p>Ticket sourcing for football, basketball, tennis, motorsports and other major sporting events.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">03</div>
+          <h3>Personalized Search</h3>
+          <p>Tell us what event you want to attend and we will search for the best available options based on your needs.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">04</div>
+          <h3>Premium & VIP Access</h3>
+          <p>Assistance with premium seating, hospitality, VIP packages and exclusive live experiences when available.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">05</div>
+          <h3>Fast Communication</h3>
+          <p>We provide clear updates and direct communication throughout the sourcing process.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-num">06</div>
+          <h3>Secure Delivery</h3>
+          <p>We prioritize official transfers, reliable sources and transparent delivery methods whenever possible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works">
+    <div class="container">
+      <div style="text-align:center;" class="reveal">
+        <span class="section-tag">Process</span>
+        <h2 class="section-title">How It <em>Works</em></h2>
+        <div class="divider" style="margin:1.5rem auto;"></div>
+        <p class="section-sub" style="margin:0 auto;text-align:center;">Three straightforward steps from request to event access.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-circle"><span class="step-circle-num">1</span></div>
+          <div>
+            <h3>Submit Your Request</h3>
+            <p>Fill out the ticket request form with the event details, location, date, number of tickets and budget.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-circle"><span class="step-circle-num">2</span></div>
+          <div>
+            <h3>We Search for Options</h3>
+            <p>Our team reviews your request and searches for suitable ticket options based on availability and your preferences.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-4">
+          <div class="step-circle"><span class="step-circle-num">3</span></div>
+          <div>
+            <h3>Receive Available Offers</h3>
+            <p>We contact you with the available options, pricing and next steps before any final confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section id="why-us">
+    <div class="container">
+      <div class="reveal" style="margin-bottom:0;">
+        <span class="section-tag">Why Us</span>
+        <h2 class="section-title">Why Choose <em>Pelicans Gate</em></h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <span class="why-icon">🎯</span>
+          <h3>Personalized Service</h3>
+          <p>Every request is reviewed individually to match the client's event, budget and seating preferences.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-1">
+          <span class="why-icon">🌍</span>
+          <h3>Global Event Access</h3>
+          <p>We assist with concerts, sports, festivals and exclusive experiences in different markets worldwide.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-2">
+          <span class="why-icon">⚡</span>
+          <h3>Fast Response</h3>
+          <p>Our process is designed to provide clear communication and quick follow-up on every inquiry.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-3">
+          <span class="why-icon">🔒</span>
+          <h3>Reliable Sourcing</h3>
+          <p>We focus on trusted sources, official transfers where possible and transparent ticket delivery.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-4">
+          <span class="why-icon">⭐</span>
+          <h3>Premium Experience</h3>
+          <p>From general admission to VIP and hospitality options, we help clients find the right event experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section id="request-tickets">
+    <div class="container">
+      <div class="form-header reveal">
+        <span class="section-tag">Get Started</span>
+        <h2 class="section-title">Request Your <em>Tickets</em></h2>
+        <div class="divider"></div>
+        <p class="section-sub" style="margin:0 auto;text-align:center;">Tell us what event you are looking for and our team will contact you with available options.</p>
+      </div>
+
+      <div class="form-container reveal">
+        <form id="ticket-form" novalidate>
+
+          <p class="form-section-title">Client Details</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="full_name">Full Name *</label>
+              <input type="text" id="full_name" name="full_name" placeholder="John Smith" required />
+            </div>
+            <div class="field">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" placeholder="john@example.com" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone / WhatsApp *</label>
+              <input type="text" id="phone" name="phone" placeholder="+1 555 000 0000" required />
+            </div>
+            <div class="field">
+              <label for="country">Country *</label>
+              <input type="text" id="country" name="country" placeholder="United States" required />
+            </div>
+          </div>
+
+          <hr class="form-sep" />
+          <p class="form-section-title">Event Details</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="event_name">Event Name *</label>
+              <input type="text" id="event_name" name="event_name" placeholder="e.g. Taylor Swift — The Eras Tour" required />
+            </div>
+            <div class="field">
+              <label for="artist_team">Artist / Team / Event Type</label>
+              <input type="text" id="artist_team" name="artist_team" placeholder="e.g. Taylor Swift" />
+            </div>
+            <div class="field">
+              <label for="city">City</label>
+              <input type="text" id="city" name="city" placeholder="e.g. London" />
+            </div>
+            <div class="field">
+              <label for="venue">Venue (if known)</label>
+              <input type="text" id="venue" name="venue" placeholder="e.g. Wembley Stadium" />
+            </div>
+            <div class="field">
+              <label for="event_date">Event Date</label>
+              <input type="date" id="event_date" name="event_date" />
+            </div>
+            <div class="field">
+              <label for="num_tickets">Number of Tickets *</label>
+              <input type="number" id="num_tickets" name="number_of_tickets" placeholder="2" min="1" required />
+            </div>
+            <div class="field">
+              <label for="seating">Preferred Seating Category</label>
+              <select id="seating" name="seating_category">
+                <option value="" disabled selected>Select category</option>
+                <option>General Admission</option>
+                <option>Floor</option>
+                <option>Lower Tier</option>
+                <option>Upper Tier</option>
+                <option>VIP</option>
+                <option>Hospitality</option>
+                <option>Premium Seats</option>
+                <option>Any Available Option</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="budget">Maximum Budget per Ticket (USD)</label>
+              <input type="number" id="budget" name="max_budget_per_ticket" placeholder="e.g. 500" min="0" />
+            </div>
+            <div class="field form-full">
+              <label for="comments">Additional Comments</label>
+              <textarea id="comments" name="additional_comments" placeholder="Any specific requirements, seat preferences or other details..."></textarea>
+            </div>
+          </div>
+
+          <hr class="form-sep" />
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="consent_contact" name="consent_contact" required />
+            <label for="consent_contact">I agree to be contacted regarding my ticket request. *</label>
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="consent_privacy" name="consent_privacy" required />
+            <label for="consent_privacy">I accept the <a href="#" onclick="showLegal('privacy')">Privacy Policy</a>. *</label>
+          </div>
+
+          <div class="form-submit-row">
+            <button type="submit" class="btn-submit">Submit Request</button>
+            <p class="form-note">Submitting a request does not guarantee ticket availability or final pricing.</p>
+          </div>
+
+          <div id="form-success" class="form-message success">✓ Thank you. Your request has been submitted successfully. Our team will contact you as soon as possible.</div>
+          <div id="form-error" class="form-message error">✗ Something went wrong. Please try again or contact us directly at contact@pelicansgate.com</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <div class="reveal">
+            <span class="section-tag">Contact</span>
+            <h2 class="section-title">Get in <em>Touch</em></h2>
+            <div class="divider"></div>
+            <p style="color:var(--white-dim);font-size:.9rem;line-height:1.9;">For ticket requests, partnerships or general inquiries, please contact Pelicans Gate directly.</p>
+          </div>
+          <div class="contact-items">
+            <div class="contact-item reveal reveal-delay-1">
+              <div class="contact-item-icon">✉</div>
+              <div class="contact-item-text">
+                <label>Email</label>
+                <a href="mailto:contact@pelicansgate.com">contact@pelicansgate.com</a>
+              </div>
+            </div>
+            <div class="contact-item reveal reveal-delay-2">
+              <div class="contact-item-icon">📸</div>
+              <div class="contact-item-text">
+                <label>Instagram</label>
+                <a href="https://instagram.com/pelicansgate" target="_blank">@pelicansgate</a>
+              </div>
+            </div>
+            <div class="contact-item reveal reveal-delay-3">
+              <div class="contact-item-icon">🌐</div>
+              <div class="contact-item-text">
+                <label>Location</label>
+                <p>United States · International Service</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-cta-box reveal reveal-delay-2">
+          <h3>Looking for tickets to a specific event?</h3>
+          <p>Submit your request and our team will help you find the best available options for your event.</p>
+          <a href="#request-tickets" class="btn-primary">Request Tickets</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main-content -->
+
+<!-- ── PRIVACY POLICY ── -->
+<div id="page-privacy" class="legal-page">
+  <div class="container">
+    <div class="legal-content">
+      <a href="#" class="back-link" onclick="showMain(); return false;">← Back to main site</a>
+      <h1>Privacy Policy</h1>
+      <p><em>Last updated: 2026</em></p>
+      <h2>1. Who We Are</h2>
+      <p>Pelicans Gate LLC ("Pelicans Gate", "we", "us") operates pelicansgate.com, a personalized ticket sourcing service. This Privacy Policy explains how we collect, use and protect your personal data.</p>
+      <h2>2. Data We Collect</h2>
+      <p>When you submit a ticket request through our website, we collect the following information:</p>
+      <ul>
+        <li>Full name</li>
+        <li>Email address</li>
+        <li>Phone number / WhatsApp</li>
+        <li>Country of residence</li>
+        <li>Event details (name, city, venue, date)</li>
+        <li>Number of tickets and seating preferences</li>
+        <li>Approximate budget</li>
+        <li>Additional comments you provide</li>
+      </ul>
+      <h2>3. How We Use Your Data</h2>
+      <p>Your data is used solely to respond to your ticket request, communicate available options and provide our ticket sourcing service. We do not sell, share or transfer your personal data to third parties for marketing purposes.</p>
+      <h2>4. Data Retention</h2>
+      <p>We retain your request data for as long as necessary to complete the service or as required by applicable law. You may request deletion of your data by contacting us at contact@pelicansgate.com.</p>
+      <h2>5. Security</h2>
+      <p>We take reasonable technical and organizational measures to protect your personal data from unauthorized access, loss or misuse.</p>
+      <h2>6. Your Rights</h2>
+      <p>You have the right to access, correct or delete your personal data. To exercise these rights, contact us at contact@pelicansgate.com.</p>
+      <h2>7. Contact</h2>
+      <p>Pelicans Gate LLC · contact@pelicansgate.com</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── TERMS & CONDITIONS ── -->
+<div id="page-terms" class="legal-page">
+  <div class="container">
+    <div class="legal-content">
+      <a href="#" class="back-link" onclick="showMain(); return false;">← Back to main site</a>
+      <h1>Terms &amp; Conditions</h1>
+      <p><em>Last updated: 2026</em></p>
+      <h2>1. Service Description</h2>
+      <p>Pelicans Gate LLC provides a personalized ticket sourcing service. We assist clients in finding and securing access to live events including concerts, sports events, festivals and exclusive experiences.</p>
+      <h2>2. No Guarantee of Availability</h2>
+      <p>Submitting a ticket request through our website does not guarantee ticket availability. All tickets are subject to availability from our sourcing channels at the time of the request.</p>
+      <h2>3. Pricing</h2>
+      <p>Prices for tickets may vary and are subject to change. Clients will be informed of pricing and total costs before any final confirmation or payment is made.</p>
+      <h2>4. Client Confirmation</h2>
+      <p>No purchase will be processed without the client's explicit confirmation. We will present available options and await your approval before proceeding.</p>
+      <h2>5. No Direct Payment Processing</h2>
+      <p>In the current phase, pelicansgate.com does not process payments directly. Payment arrangements will be communicated individually after confirmation of availability and pricing.</p>
+      <h2>6. Ticket Conditions</h2>
+      <p>All tickets are subject to the conditions of the event organizer, ticketing platform, venue or relevant provider. Pelicans Gate is not responsible for event cancellations, rescheduling or changes made by organizers.</p>
+      <h2>7. Limitation of Liability</h2>
+      <p>Pelicans Gate LLC is not liable for any direct or indirect damages arising from the use of this website or our services beyond the amount paid for a specific transaction.</p>
+      <h2>8. Contact</h2>
+      <p>Pelicans Gate LLC · contact@pelicansgate.com</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="#home" class="logo" onclick="showMain()">
+          <div class="logo-icon">🦤</div>
+          <span class="logo-text">Pelicans Gate</span>
+        </a>
+        <p class="footer-tagline">Personalized ticket sourcing for live events worldwide.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#" onclick="showLegal('privacy'); return false;">Privacy Policy</a>
+        <a href="#" onclick="showLegal('terms'); return false;">Terms &amp; Conditions</a>
+        <a href="#contact" onclick="showMain()">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Pelicans Gate LLC. All rights reserved.</p>
+      <p class="footer-copy">contact@pelicansgate.com</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Mobile menu ──
+  function toggleMenu() {
+    const h = document.getElementById('hamburger');
+    const n = document.getElementById('mobile-nav');
+    h.classList.toggle('open');
+    n.classList.toggle('open');
+  }
+  function closeMobile() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobile-nav').classList.remove('open');
+  }
+
+  // ── Legal pages ──
+  function showLegal(page) {
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('page-privacy').classList.remove('active');
+    document.getElementById('page-terms').classList.remove('active');
+    if (page === 'privacy') document.getElementById('page-privacy').classList.add('active');
+    if (page === 'terms') document.getElementById('page-terms').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  function showMain() {
+    document.getElementById('main-content').style.display = 'block';
+    document.getElementById('page-privacy').classList.remove('active');
+    document.getElementById('page-terms').classList.remove('active');
+  }
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Header scroll style ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('site-header').style.background =
+      window.scrollY > 40 ? 'rgba(7,12,24,0.97)' : 'rgba(10,15,30,0.85)';
+  });
+
+  // ── Form submission ──
+  document.getElementById('ticket-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const success = document.getElementById('form-success');
+    const error = document.getElementById('form-error');
+    success.style.display = 'none';
+    error.style.display = 'none';
+
+    // Basic validation
+    const required = ['full_name','email','phone','country','event_name','num_tickets'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = 'rgba(220,60,60,.6)';
+        valid = false;
+      } else {
+        el.style.borderColor = '';
+      }
+    });
+
+    const cc = document.getElementById('consent_contact');
+    const cp = document.getElementById('consent_privacy');
+    if (!cc.checked || !cp.checked) {
+      valid = false;
+      if (!cc.checked) cc.parentElement.style.color = '#f8a0a0';
+      if (!cp.checked) cp.parentElement.style.color = '#f8a0a0';
+    } else {
+      cc.parentElement.style.color = '';
+      cp.parentElement.style.color = '';
+    }
+
+    if (!valid) {
+      error.textContent = '✗ Please fill in all required fields and accept the required checkboxes.';
+      error.style.display = 'block';
+      return;
+    }
+
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    // Collect data
+    const data = {};
+    new FormData(form).forEach((v, k) => data[k] = v);
+    data.consent_contact = cc.checked;
+    data.consent_privacy = cp.checked;
+
+    try {
+      // Replace '/api/ticket-request' with your actual backend endpoint
+      const res = await fetch('/api/ticket-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        success.style.display = 'block';
+        form.reset();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch {
+      // In the demo / static build, show success for UI demonstration
+      // Remove the line below and keep only error.style.display when connected to a real backend
+      success.style.display = 'block';
+      form.reset();
+      // error.style.display = 'block';
+    } finally {
+      btn.textContent = 'Submit Request';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
